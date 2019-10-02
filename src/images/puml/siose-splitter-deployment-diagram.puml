@@ -1,0 +1,76 @@
+@startuml
+
+/'title Deployment Diagram'/ 
+
+/'COMPONENTS'/ 
+node "Docker Machine" {
+
+    package "Database Interface" as db_pkg{
+        node "Debian //stretch-slim//" {
+            database "SIOSE\ndatabase" AS db {
+            }
+            [Custom\nPostgres\nextensions] as pgxt
+            [PostgreSQL - 10.2] as pg
+            [PostGIS - 2.4] as pgis
+
+        }
+        interface "Port\n5432" as 5432
+    }
+
+    package "Bussines Logic"{
+    node "Alpine Linux //edge//" as alpine {
+        [GDAL/OGR - 2.2.3] as gdal
+        folder workdir as wd
+    }
+    }
+
+    package "Visual Interface"{
+        node "Debian //Jessie//" as jessie {
+            [PgAdmin4] as pgadmin
+        } 
+        node "Ubuntu //Xenial//" as ubuntu {
+            [QGIS - 3.0] as qgis
+            folder workdir as wd2
+        } 
+    }
+}
+
+interface "Port\n5433" as 5433
+interface "Port\n5050" as 5050
+interface "X11\nserver" as x11
+interface "Docker\nSystem" as docker
+folder outputs as out
+actor user
+
+/'LINKS'/ 
+/'Inside nodes'/
+wd - gdal
+qgis - wd2
+pg -up(0- db
+pg -up(0- pgis
+pgis -left(0- db
+pgis -up(0- pgxt
+pgxt -left(0- db
+pg -up(0- pgxt
+
+/'Inside docker-machine'/
+gdal -left-> 5432
+pg #-() 5432
+pgadmin .down.> 5432
+qgis .down.> 5432
+5432 -(0)- 5433
+
+/'Outside docker-machine'/
+user -> docker
+user .left.> out
+docker -up-> gdal
+wd - wd2
+wd -(0)- out
+jessie #-left-() 5050
+ubuntu #-left-() x11
+
+/'Adjust positions'/
+pgadmin -[hidden]- qgis
+qgis -[hidden]- gdal
+
+@enduml

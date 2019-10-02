@@ -1,0 +1,29 @@
+@startuml
+
+/'title Activity Diagram'/ 
+
+|User|
+start
+:> docker run;
+
+|#AntiqueWhite|Docker Machine|
+:launch services;
+
+:load data;
+
+:launch script;
+
+while ( Are there \n remaining \n grid cells? ) is (yes)
+	:new spatial SQL query;
+	:new GPKG file;
+	:add to workdir;
+end while (no)
+
+:docker stop && \\\ndocker rm;
+
+|User|
+:Check outputs;
+
+stop
+
+@enduml
