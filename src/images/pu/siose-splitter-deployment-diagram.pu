@@ -66,7 +66,7 @@ user .left.> out
 docker -up-> gdal
 wd - wd2
 wd -(0)- out
-jessie #-left-() 5050
+pgadmin #-left-() 5050
 ubuntu #-left-() x11
 
 /'Adjust positions'/
