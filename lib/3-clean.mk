@@ -6,34 +6,24 @@
 .PHONY: mostlyclean
 ## Like ‘clean’, but not deleting a few files that normally don’t want to recompile (e.g. sample data, working DB, etc).
 mostlyclean:
-	echo -n "Deleting most of the files created by this Makefile... "; \
-	rm $(mostly_clean); \
-	echo "Done."
+	rm $(mostly_clean);
 
 
 .PHONY: distclean
 ## Delete all files in the 'dist' directory (EVEN THE WORKING DB!!!!)
 distclean:
-	@echo -n "Deleting all the outputs... "; \
-	rm $(distclean); \
-	echo "Done."
+	rm $(distclean)
 
 
-#TODO: Remove logs and overviews, when ready.
 .PHONY: clean
 ## Delete all files created by this Makefile.
-clean: mostlyclean
-	echo -n "Deleting all the outputs created by this Makefile... "; \
-	rm $(clean); \
-	echo "Done."
+clean:
+	rm $(clean)
 
 
-#TODO: Remove .gitignore and setting files, when ready.
 .PHONY: maintainer-clean
 ## Delete almost everything that can be reconstructed with this Makefile. It includes everything deleted by clean, plus more.
-maintainer-clean: clean
-	echo -n "Deleting almost everything that can be reconstructed with this Makefile... "; \
-	rm $(mantainer_clean); \
-	echo "Done."
+maintainer-clean:
+	rm $(mantainer_clean)
 
 
